@@ -2,11 +2,15 @@
 {% block content %}
     <!-- Checks if city or zipcode was entered -->
     {% if city %}
-    <h1 align="center">The weather in {{ city }} is </h1>
+        <h3>The weather in {{ city }} is </h3>
     {% else %}
-    <h1 align="center">The weather in {{ zipcode }} is </h1>
+        <h3>The weather in {{ zipcode }} is </h3>
     {% endif %}
 
-    <p>{{ temp }} in {{ unit }}</p>
+    {% if unit == "imperial" %}
+        <p>{{ temp }} F</p>
+    {% else %}
+        <p>{{ temp }} C</p>
+    {% endif %}
     <p>{{ description }}</p>
 {% endblock content %}
