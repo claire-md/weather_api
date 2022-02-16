@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
+    <!-- Checks if city or zipcode was entered -->
+    {% if city %}
+    <h1 align="center">The weather in {{ city }} is </h1>
+    {% else %}
     <h1 align="center">The weather in {{ zipcode }} is </h1>
+    {% endif %}
+
     <p>{{ temp }} in {{ unit }}</p>
     <p>{{ description }}</p>
 {% endblock content %}
