@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+    <form method="POST" action="/temperature">
+        <div class="form-group">
+            <label for="zipcode">Zipcode</label>
+            <input 
+                type="text"
+                name="zipcode"
+                id="zipcode"
+                class="form-control"
+                placeholder="Enter zipcode"
+            />
+        </div>
+        <div class="form-check form-check-inline">
+            <input 
+                type="radio"
+                name="units"
+                id="imperial"
+                class="form-check-input"
+                value="imperial"
+                checked
+            />
+            <label for="imperial" class="form-check-label">Fahrenheit</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input 
+                type="radio"
+                name="units"
+                id="metric"
+                class="form-check-input"
+                value="metric"
+            />
+            <label for="metric" class="form-check-label">Celsius</label>
+        </div>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock content %}
