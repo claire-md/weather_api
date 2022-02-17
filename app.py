@@ -19,24 +19,11 @@ def home():
 @app.route("/temperature", methods=["GET", "POST"])
 def temperature():
     units = request.form["units"]
-    zip = request.form.get("zipcode")
     city = request.form.get("city")
+    # zip = request.form.get("zipcode")
 
     # Checks if the zipcode entered is 5 digits and is numbers
-    if len(zip) == 5 and zip.isdigit():
-        complete_url = base_url + "&zip=" + zip + "&units=" + units
-        response = requests.get(complete_url)
-
-        res_json = response.json()
-        temp = res_json["main"]["temp"]
-        description = res_json["weather"][0]["description"]
-
-        return render_template("temperature.html",
-                               zipcode=zip,
-                               unit=units,
-                               temp=temp,
-                               description=description)
-    elif len(city) > 1 and not city.isdigit():
+    if len(city) > 1 and not city.isdigit():
         complete_url = base_url + "&q=" + city + "&units=" + units
         response = requests.get(complete_url)
 
@@ -49,8 +36,21 @@ def temperature():
                                unit=units,
                                temp=temp,
                                description=description)
+    # elif len(zip) == 5 and zip.isdigit():
+    #     complete_url = base_url + "&zip=" + zip + "&units=" + units
+    #     response = requests.get(complete_url)
+
+    #     res_json = response.json()
+    #     temp = res_json["main"]["temp"]
+    #     description = res_json["weather"][0]["description"]
+
+    #     return render_template("temperature.html",
+    #                            zipcode=zip,
+    #                            unit=units,
+    #                            temp=temp,
+    #                            description=description)
     else:
-        flash("Please enter a valid zipcode", category="error")
+        flash("Please enter a valid city", category="error")
     return redirect(url_for("home"))
 
 
