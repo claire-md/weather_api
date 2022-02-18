@@ -1,50 +1,58 @@
 {% extends "layout.html" %}
 {% block content %}
-    <form method="POST" action="/temperature">
-        <div class="form-group">
-            <label for="zipcode">Zipcode</label>
-            <input 
-                type="text"
-                name="zipcode"
-                id="zipcode"
-                class="form-control"
-                placeholder="Enter zipcode"
-            />
+    <section class="vh-100" style="background-color: #4B515D;">
+        <div class="container py-5 h-100">
+      
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6 col-xl-4">
+      
+              <div class="card" style="color: #4B515D; border-radius: 35px;">
+                <div class="card-body p-4">
+                    <h2>Check out the weather</h2>
+                    <form method="POST" action="/temperature">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input 
+                                type="text"
+                                name="city"
+                                id="city"
+                                class="form-control"
+                                placeholder="Enter city name"
+                            />
+                        </div>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input 
+                                type="radio"
+                                name="units"
+                                id="imperial"
+                                class="form-check-input"
+                                value="imperial"
+                                checked
+                            />
+                            <label for="imperial" class="form-check-label">Fahrenheit</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input 
+                                type="radio"
+                                name="units"
+                                id="metric"
+                                class="form-check-input"
+                                value="metric"
+                            />
+                            <label for="metric" class="form-check-label">Celsius</label>
+                        </div>
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn-outline-secondary">Submit</button>
+                    </form>
+      
+                </div>
+              </div>
+      
+            </div>
+          </div>
+      
         </div>
-        <br>
-        <div class="form-group">
-            <label for="city">City</label>
-            <input 
-                type="text"
-                name="city"
-                id="city"
-                class="form-control"
-                placeholder="Enter city name"
-            />
-        </div>
-        <div class="form-check form-check-inline">
-            <input 
-                type="radio"
-                name="units"
-                id="imperial"
-                class="form-check-input"
-                value="imperial"
-                checked
-            />
-            <label for="imperial" class="form-check-label">Fahrenheit</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input 
-                type="radio"
-                name="units"
-                id="metric"
-                class="form-check-input"
-                value="metric"
-            />
-            <label for="metric" class="form-check-label">Celsius</label>
-        </div>
-        <br>
-        <br>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      </section>
 {% endblock content %}
