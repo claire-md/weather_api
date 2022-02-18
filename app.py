@@ -20,6 +20,7 @@ def home():
 def temperature():
     units = request.form["units"]
     city = request.form.get("city")
+    # If not a vaild name for a city flashes an error message
     if len(city) < 2 or city.isdigit():
         flash("Please enter a valid city", category="error")
         return redirect(url_for("home"))
@@ -27,10 +28,11 @@ def temperature():
     complete_url = base_url + "&q=" + city + "&units=" + units
     response = requests.get(complete_url)
     res_json = response.json()
-    if res_json["cod"] != 200:
+    if res_json["cod"] != 200:  # If not a valid city flashes an error messages
         flash("Please enter a valid city", category="error")
         return redirect(url_for("home"))
 
+    # Storing all the needed data from OpenWeather
     country = res_json["sys"]["country"]
     temp = res_json["main"]["temp"]
     feel_temp = res_json["main"]["feels_like"]
