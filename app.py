@@ -19,39 +19,36 @@ def home():
 @app.route("/temperature", methods=["GET", "POST"])
 def temperature():
     units = request.form["units"]
-    zip = request.form.get("zipcode")
     city = request.form.get("city")
+    # If not a vaild name for a city flashes an error message
+    if len(city) < 2 or city.isdigit():
+        flash("Please enter a valid city", category="error")
+        return redirect(url_for("home"))
 
-    # Checks if the zipcode entered is 5 digits and is numbers
-    if len(zip) == 5 and zip.isdigit():
-        complete_url = base_url + "&zip=" + zip + "&units=" + units
-        response = requests.get(complete_url)
+    complete_url = base_url + "&q=" + city + "&units=" + units
+    response = requests.get(complete_url)
+    res_json = response.json()
+    if res_json["cod"] != 200:  # If not a valid city flashes an error messages
+        flash("Please enter a valid city", category="error")
+        return redirect(url_for("home"))
 
-        res_json = response.json()
-        temp = res_json["main"]["temp"]
-        description = res_json["weather"][0]["description"]
+    # Storing all the needed data from OpenWeather
+    country = res_json["sys"]["country"]
+    temp = res_json["main"]["temp"]
+    feel_temp = res_json["main"]["feels_like"]
+    humidity = res_json["main"]["humidity"]
+    description = res_json["weather"][0]["description"]
+    icon = res_json["weather"][0]["icon"]
 
-        return render_template("temperature.html",
-                               zipcode=zip,
-                               unit=units,
-                               temp=temp,
-                               description=description)
-    elif len(city) > 1 and not city.isdigit():
-        complete_url = base_url + "&q=" + city + "&units=" + units
-        response = requests.get(complete_url)
-
-        res_json = response.json()
-        temp = res_json["main"]["temp"]
-        description = res_json["weather"][0]["description"]
-
-        return render_template("temperature.html",
-                               city=city,
-                               unit=units,
-                               temp=temp,
-                               description=description)
-    else:
-        flash("Please enter a valid zipcode", category="error")
-    return redirect(url_for("home"))
+    return render_template("temperature.html",
+                           city=city.title(),
+                           unit=units,
+                           country=country,
+                           temp=temp,
+                           feel_temp=feel_temp,
+                           humidity=humidity,
+                           description=description.title(),
+                           icon=icon)
 
 
 if __name__ == "__main__":
