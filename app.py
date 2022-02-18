@@ -20,38 +20,33 @@ def home():
 def temperature():
     units = request.form["units"]
     city = request.form.get("city")
-    # zip = request.form.get("zipcode")
-
-    # Checks if the zipcode entered is 5 digits and is numbers
-    if len(city) > 1 and not city.isdigit():
-        complete_url = base_url + "&q=" + city + "&units=" + units
-        response = requests.get(complete_url)
-
-        res_json = response.json()
-        temp = res_json["main"]["temp"]
-        description = res_json["weather"][0]["description"]
-
-        return render_template("temperature.html",
-                               city=city,
-                               unit=units,
-                               temp=temp,
-                               description=description)
-    # elif len(zip) == 5 and zip.isdigit():
-    #     complete_url = base_url + "&zip=" + zip + "&units=" + units
-    #     response = requests.get(complete_url)
-
-    #     res_json = response.json()
-    #     temp = res_json["main"]["temp"]
-    #     description = res_json["weather"][0]["description"]
-
-    #     return render_template("temperature.html",
-    #                            zipcode=zip,
-    #                            unit=units,
-    #                            temp=temp,
-    #                            description=description)
-    else:
+    if len(city) < 2 or city.isdigit():
         flash("Please enter a valid city", category="error")
-    return redirect(url_for("home"))
+        return redirect(url_for("home"))
+
+    complete_url = base_url + "&q=" + city + "&units=" + units
+    response = requests.get(complete_url)
+    res_json = response.json()
+    if res_json["cod"] != 200:
+        flash("Please enter a valid city", category="error")
+        return redirect(url_for("home"))
+
+    country = res_json["sys"]["country"]
+    temp = res_json["main"]["temp"]
+    feel_temp = res_json["main"]["feels_like"]
+    humidity = res_json["main"]["humidity"]
+    description = res_json["weather"][0]["description"]
+    icon = res_json["weather"][0]["icon"]
+
+    return render_template("temperature.html",
+                           city=city.title(),
+                           unit=units,
+                           country=country,
+                           temp=temp,
+                           feel_temp=feel_temp,
+                           humidity=humidity,
+                           description=description.title(),
+                           icon=icon)
 
 
 if __name__ == "__main__":
